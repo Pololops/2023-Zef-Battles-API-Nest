@@ -8,9 +8,10 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { FamilyService } from '../services/family.service';
-import { CreateFamilyDto } from 'dto/family.dto';
-import { UpdateFamilyDto } from '../../dto/family.dto';
+import type { Family } from './interfaces/families.interface';
+import { FamilyService } from './families.service';
+import { CreateFamilyDto } from 'src/families/dto/family.dto';
+import { UpdateFamilyDto } from './dto/family.dto';
 
 @Controller('families')
 export class FamilyController {
@@ -33,7 +34,7 @@ export class FamilyController {
   @Get('/:id')
   @HttpCode(200)
   async getFamilyByPk(@Param('id') id: string): Promise<Family | undefined> {
-    const familyId = parseInt(id, 10);
+    const familyId = parseInt(id);
     return this.familyService.findByPk(familyId);
   }
 
@@ -44,7 +45,7 @@ export class FamilyController {
     @Body() updateFamilyDto: UpdateFamilyDto,
   ): Promise<Family | Error> {
     try {
-      const familyId = parseInt(id, 10);
+      const familyId = parseInt(id);
 
       if (familyId !== updateFamilyDto.id) {
         throw new Error('Family id does not match');
@@ -60,13 +61,8 @@ export class FamilyController {
   @HttpCode(204)
   async deleteFamily(@Param('id') id: string): Promise<string | Error> {
     try {
-      const familyId = parseInt(id, 10);
-      const deletedFamily = this.familyService.delete(familyId);
-
-      if (!deletedFamily) {
-        throw new Error('Family not found');
-      }
-
+      const familyId = parseInt(id);
+      this.familyService.delete(familyId);
       return 'family deleted';
     } catch (error) {
       return error.message;

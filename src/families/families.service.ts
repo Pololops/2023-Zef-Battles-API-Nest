@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFamilyDto, UpdateFamilyDto } from '../../dto/family.dto';
+import { CreateFamilyDto, UpdateFamilyDto } from './dto/family.dto';
+import type { Family } from './interfaces/families.interface';
 
 import * as data from '../../data/fake.json';
 
