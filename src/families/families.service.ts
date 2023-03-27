@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateFamilyDto, UpdateFamilyDto } from './dto/family.dto';
 import type { Family } from './interfaces/families.interface';
 
@@ -38,7 +38,7 @@ export class FamilyService {
 
   delete(id: number): Family {
     const foundFamily = this.findByPk(id);
-    if (!foundFamily) throw new Error('Family not found');
+    if (!foundFamily) throw new BadRequestException('Family not found');
 
     this.families.splice(this.families.indexOf(foundFamily), 1);
     return foundFamily;
